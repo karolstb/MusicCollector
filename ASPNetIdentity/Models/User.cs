@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
+//user karolstb@gmail.com hasło karolkarol
+
 namespace MusicCollector.Models
 {
     public class User : IdentityUser

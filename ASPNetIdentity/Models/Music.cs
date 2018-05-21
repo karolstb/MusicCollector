@@ -12,9 +12,16 @@ namespace MusicCollector.Models
     {
         [Key]
         public int EntryNo { get; set; }
+        [Display(Name ="Autor")]
         public string Author { get; set; }
+        [Display(Name ="Tytuł")]
         public string Title { get; set; }
-        public decimal Duration { get; set; }
+        [Display(Name ="Długość")]
+        [DataType(DataType.Duration)]
+        [DisplayFormat(DataFormatString ="{hh:mm}", ApplyFormatInEditMode =true)]
+        public TimeSpan Duration { get; set; }
+        [Display(Name ="Rok produkcji")]
+        public int YearOfProduction { get; set; }
 
         public virtual ICollection<Release> ReleaseList { get; set; }
     }
