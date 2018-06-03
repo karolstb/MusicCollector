@@ -36,10 +36,19 @@ namespace MusicCollector.Controllers
         }
 
         // GET: Albums/Create
-        public ActionResult Create()
+        public ActionResult Create(int defaultYearOfProduction, int minutes)
         {
-            return View();
+            Album newAlbum = new Album();
+            newAlbum.YearOfProduction = defaultYearOfProduction;
+            newAlbum.Duration = new TimeSpan(0, minutes, 0);
+            return View( newAlbum);
         }
+
+        //// GET: Albums/Create
+        //public ActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Albums/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -47,7 +56,8 @@ namespace MusicCollector.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //public ActionResult Create([Bind(Include = "EntryNo,Author,Title,Duration")] Album album)   
-        public ActionResult Create([Bind(Include = "Author,Title,Duration,YearOfProduction")] Album album)
+        //public ActionResult Create([Bind(Include = "Author,Title,Duration,YearOfProduction", Prefix ="Duration")] Album album)
+        public ActionResult Create(Album album)
         {
             //bind include (albo exclude) definiuje kolumny, jakie można ustawić daną funkcją. 
             //dzięki temu zaboiega sie próbom atakowania np. przez fidller, gdzię można przypisać wartości do propertisów, 

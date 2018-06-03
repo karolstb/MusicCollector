@@ -24,6 +24,14 @@ namespace MusicCollector.Models
         public int YearOfProduction { get; set; }
 
         public virtual ICollection<Release> ReleaseList { get; set; }
+
+        //public TimeSpan DurationPrintable
+        //{
+        //    get
+        //    {
+        //        return TimeSpan.FromSeconds()
+        //    }
+        //}
     }
 
     public class Release
