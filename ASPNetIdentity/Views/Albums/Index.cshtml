@@ -23,7 +23,7 @@
         </th>
         <th></th>
     </tr>
-
+    @*@Html.DisplayFor(model => model.ElementAt(0).Duration)*@
 @foreach (var item in Model) {
     <tr>
         <td>
@@ -33,7 +33,7 @@
             @Html.DisplayFor(modelItem => item.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Duration)
+            @Html.DisplayFor(modelItem => item.DurationStr)
             @*@Html.DisplayFor(modelItem => item.Duration.TotalMinutes+" : "+item.Duration.Seconds)*@
         </td>
         <td>
