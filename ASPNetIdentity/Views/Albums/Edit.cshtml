@@ -72,6 +72,41 @@
     </div>
 }
 
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().EntryNo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().FilePath)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Item2.FirstOrDefault().UserUploaded)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Item2)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.EntryNo)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FilePath)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UserUploaded)
+        </td>
+        @*<td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.EntryNo }) |
+            @Html.ActionLink("Details", "Details", new { id = item.EntryNo }) |
+            @Html.ActionLink("Delete", "Delete", new { id = item.EntryNo })
+        </td>*@
+    </tr>
+}
+</table>
+
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
