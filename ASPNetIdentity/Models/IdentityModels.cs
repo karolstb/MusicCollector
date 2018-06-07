@@ -38,6 +38,7 @@ namespace MusicCollector.Models
 
         public DbSet<Album> Album { get; set; }
         public DbSet<Release> Release { get; set; }
+        public DbSet<Photo> Photos { get; set; }
     }
 
     ///// <summary>

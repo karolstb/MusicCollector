@@ -84,7 +84,10 @@ namespace MusicCollector.Controllers
             {
                 return HttpNotFound();
             }
-            return View(album);
+
+            List<Photo> photoList = db.Photos.Where(c => c.AlbumNo == album.EntryNo).ToList();
+            return View(new Tuple<Album, ICollection<Photo>>(album, photoList));
+            //return View(album);
         }
 
         // POST: Albums/Edit/5
@@ -92,15 +95,18 @@ namespace MusicCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "EntryNo,Author,Title,Duration")] Album album)
+        //public ActionResult Edit([Bind(Include = "EntryNo,Author,Title,Duration,YearOfProduction")] Album album)
+        public ActionResult Edit(Tuple<Album, ICollection<Photo>> albumPlusPhotos)
         {
             if (ModelState.IsValid)
             {
+                var album = albumPlusPhotos.Item1;
                 db.Entry(album).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(album);
+            return View(albumPlusPhotos);
+            //return View(album);
         }
 
         // GET: Albums/Delete/5
