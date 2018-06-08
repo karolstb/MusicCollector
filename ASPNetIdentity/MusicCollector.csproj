@@ -249,6 +249,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\PhotosController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -275,6 +276,10 @@
     <Compile Include="Migrations\201806041856518_photo1.cs" />
     <Compile Include="Migrations\201806041856518_photo1.Designer.cs">
       <DependentUpon>201806041856518_photo1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806080801128_release2.cs" />
+    <Compile Include="Migrations\201806080801128_release2.Designer.cs">
+      <DependentUpon>201806080801128_release2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -304,6 +309,11 @@
     <Content Include="Views\Albums\Index.cshtml" />
     <Content Include="Scripts\jquery-1.12.4.min.map" />
     <Content Include="Views\Shared\DisplayTemplates\TimeSpan.cshtml" />
+    <Content Include="Views\Photos\Create.cshtml" />
+    <Content Include="Views\Photos\Delete.cshtml" />
+    <Content Include="Views\Photos\Details.cshtml" />
+    <Content Include="Views\Photos\Edit.cshtml" />
+    <Content Include="Views\Photos\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -333,6 +343,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806041856518_photo1.resx">
       <DependentUpon>201806041856518_photo1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806080801128_release2.resx">
+      <DependentUpon>201806080801128_release2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

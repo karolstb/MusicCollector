@@ -1,0 +1,78 @@
+﻿@model MusicCollector.Models.Photo
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<script type="text/javascript">
+$(function(){
+    $("#AlbumNo").on("change", function () {
+        alert('hjgh');
+   $("#AlbumEntryNo").val($(this).val());
+ });
+});
+</script>
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <h4>Photo</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.AlbumNo, "AlbumNo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+
+                @using (Html.BeginForm("Create", "Photos", " UpdateAlbumNo"))
+                {
+                    @Html.HiddenFor(model => model.AlbumEntryNo)
+                     @Html.DropDownList( "AlbumNo", (SelectList)ViewBag.Values, htmlAttributes: new { @class = "form-control",
+                    @onchange = @"
+                        var form = document.forms[0]; 
+                        form.action='UpdateAlbumNo';
+                        form.submit();"
+                        })
+                }
+                @Html.ValidationMessageFor(model => model.AlbumNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ReleaseNo, "ReleaseNo", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("ReleaseNo", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ReleaseNo, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.FilePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.FilePath, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.FilePath, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.UserUploaded, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.UserUploaded, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.UserUploaded, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

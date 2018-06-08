@@ -28,29 +28,37 @@ namespace MusicCollector.Tools
         }
     }
 
+    public class TupleAlbumPhotoBinder : DefaultModelBinder//IModelBinder
+    {
+        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        {
+            return null; //todo
+        }
+    }
 
-    //public class NullableDateTimeModelBinder : IModelBinder
-    //{
-    //    public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
-    //    {
-    //        var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
-    //        if (string.IsNullOrWhiteSpace(value.AttemptedValue))
-    //        {
-    //            return null;
-    //        }
+            //public class NullableDateTimeModelBinder : IModelBinder
+            //{
+            //    public object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+            //    {
+            //        var value = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
 
-    //        DateTime dateTime;
+            //        if (string.IsNullOrWhiteSpace(value.AttemptedValue))
+            //        {
+            //            return null;
+            //        }
 
-    //        var isDate = DateTime.TryParse(value.AttemptedValue, Thread.CurrentThread.CurrentUICulture, DateTimeStyles.None, out dateTime);
+            //        DateTime dateTime;
 
-    //        if (!isDate)
-    //        {
-    //            bindingContext.ModelState.AddModelError(bindingContext.ModelName, ModelValidationResources.InvalidDateTime);
-    //            return DateTime.UtcNow;
-    //        }
+            //        var isDate = DateTime.TryParse(value.AttemptedValue, Thread.CurrentThread.CurrentUICulture, DateTimeStyles.None, out dateTime);
 
-    //        return dateTime;
-    //    }
-    //}
-}
+            //        if (!isDate)
+            //        {
+            //            bindingContext.ModelState.AddModelError(bindingContext.ModelName, ModelValidationResources.InvalidDateTime);
+            //            return DateTime.UtcNow;
+            //        }
+
+            //        return dateTime;
+            //    }
+            //}
+        }

@@ -86,6 +86,10 @@
         <th></th>
     </tr>
 
+    <p>
+        @Html.ActionLink("Dodaj zdjęcie", "../Photos/Create", new {albumNo=Model.Item1.EntryNo })
+    </p>
+
 @foreach (var item in Model.Item2)
 {
     <tr>

@@ -26,13 +26,19 @@ namespace MusicCollector.Models
 
         public virtual ICollection<Release> ReleaseList { get; set; }
 
+        //stringi readonly
         public string  DurationStr {
             get
             {
                 return string.Format("{0}:{1}:{2}", Duration.Hours, Duration.Minutes, Duration.Seconds);
             }
         }
-
+        public string MetaDescription {
+            get
+            {
+                return string.Format("{0} - {1}", Author, Title);
+            }
+        }
 
         public virtual ICollection<Photo> PhotoList { get; set; }
 
@@ -51,7 +57,9 @@ namespace MusicCollector.Models
         public int EntryNo { get; set; }
         [ForeignKey("Album")] 
         public int AlbumNo { get; set; }
-        
+        public string RecordCompany { get; set; }   //jakie wydawnictwo
+        public string ReleaseCode { get; set; }     //kod wydania 
+
         public virtual Album Album { get; set; }
     }
 
@@ -65,6 +73,14 @@ namespace MusicCollector.Models
         [ForeignKey("Release")]
         public int? ReleaseNo { get; set; }
         public virtual Release Release { get; set; }
+
+        public int AlbumEntryNo
+        {
+            get
+            {
+                return (AlbumNo == null) ? -1 : (int)AlbumNo;
+            }
+        }
 
         public string FilePath { get; set; }
         public string UserUploaded { get; set; }

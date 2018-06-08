@@ -135,6 +135,14 @@ namespace MusicCollector.Controllers
             return RedirectToAction("Index");
         }
 
+        //// GET: Photos/Create
+        //public ActionResult AddPhoto()
+        //{
+        //    ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author");
+        //    ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo");
+        //    return View();
+        //}
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
