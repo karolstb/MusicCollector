@@ -61,7 +61,7 @@ namespace MusicCollector.Controllers
         {
             if (ModelState.IsValid)
             {
-                photo.UserUploaded = User.Identity.Name;
+                //photo.UserUploaded = User.Identity.Name;
                 db.Photos.Add(photo);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -69,6 +69,7 @@ namespace MusicCollector.Controllers
 
             ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
             ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
+            //ViewBag.UserUploaded = User.Identity.Name;
             return View(photo);
         }
 
@@ -84,8 +85,11 @@ namespace MusicCollector.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
-            ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
+            ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "MetaDescription");
+            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == photo.AlbumNo).ToList(), "EntryNo", "ReleaseCode");
+
+            //ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
+            //ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
             return View(photo);
         }
 
@@ -102,8 +106,11 @@ namespace MusicCollector.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
-            ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
+            ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "MetaDescription");
+            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == photo.AlbumNo).ToList(), "EntryNo", "ReleaseCode");
+
+            //ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
+            //ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
             return View(photo);
         }
 

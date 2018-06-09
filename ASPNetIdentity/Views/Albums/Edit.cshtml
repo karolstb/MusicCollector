@@ -102,11 +102,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.UserUploaded)
         </td>
-        @*<td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.EntryNo }) |
-            @Html.ActionLink("Details", "Details", new { id = item.EntryNo }) |
-            @Html.ActionLink("Delete", "Delete", new { id = item.EntryNo })
-        </td>*@
+        <td>
+            @Html.ActionLink( "Edit", "../Photos/Edit", new { id = item.EntryNo }) |
+            @Html.ActionLink("Details", "../Photos/Details", new { id = item.EntryNo }) |
+            @Html.ActionLink("Delete", "../Photos/Delete", new { id = item.EntryNo })
+        </td>
     </tr>
 }
 </table>

@@ -1,17 +1,23 @@
-﻿@model MusicCollector.Models.Photo
+﻿<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#AlbumNo").on("change", function () {
+        alert($(this).val());
+        var form = document.forms[0];
+        console.log('form:');
+        console.log(eval(form));
+        
+   $("#AlbumEntryNo").val($(this).val());
+ });
+});
+</script>
+
+@model MusicCollector.Models.Photo
 
 @{
     ViewBag.Title = "Create";
 }
 
-<script type="text/javascript">
-$(function(){
-    $("#AlbumNo").on("change", function () {
-        alert('hjgh');
-   $("#AlbumEntryNo").val($(this).val());
- });
-});
-</script>
 
 <h2>Create</h2>
 
@@ -34,6 +40,8 @@ $(function(){
                     @onchange = @"
                         var form = document.forms[0]; 
                         form.action='UpdateAlbumNo';
+                        alert(form);
+                        console.log(form);
                         form.submit();"
                         })
                 }
@@ -60,7 +68,7 @@ $(function(){
         <div class="form-group">
             @Html.LabelFor(model => model.UserUploaded, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.UserUploaded, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.UserUploaded, new { htmlAttributes = new { @class = "form-control", @Value=User.Identity.Name } })
                 @Html.ValidationMessageFor(model => model.UserUploaded, "", new { @class = "text-danger" })
             </div>
         </div>

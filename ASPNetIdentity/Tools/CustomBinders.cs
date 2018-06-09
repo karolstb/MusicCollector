@@ -12,8 +12,8 @@ namespace MusicCollector.Tools
         public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
         {
             //var model = (Album)base.BindModel(controllerContext, bindingContext);
-            var minutes = controllerContext.HttpContext.Request["Duration.Minutes"];
-            var seconds = controllerContext.HttpContext.Request["Duration.Seconds"];
+            var minutes = controllerContext.HttpContext.Request["Item1.Duration.Minutes"];
+            var seconds = controllerContext.HttpContext.Request["Item1.Duration.Seconds"];
             var time = new TimeSpan(0, int.Parse(minutes), int.Parse(seconds));
             //model.Duration = time;
             //return model;
@@ -30,9 +30,11 @@ namespace MusicCollector.Tools
 
     public class TupleAlbumPhotoBinder : DefaultModelBinder//IModelBinder
     {
-        public override object BindModel(ControllerContext controllerContext, ModelBindingContext bindingContext)
+        protected override object CreateModel(ControllerContext controllerContext, ModelBindingContext bindingContext, Type modelType)
         {
-            return null; //todo
+            return new Tuple<Album, ICollection<Photo>>(new Album(), new List<Photo>());
+
+            //return base.CreateModel(controllerContext, bindingContext, modelType);
         }
     }
 
