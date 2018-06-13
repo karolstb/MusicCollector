@@ -84,5 +84,7 @@ namespace MusicCollector.Models
 
         public string FilePath { get; set; }
         public string UserUploaded { get; set; }
+        [NotMapped]
+        public HttpPostedFileBase PostedFile { get; set; }
     }
 }

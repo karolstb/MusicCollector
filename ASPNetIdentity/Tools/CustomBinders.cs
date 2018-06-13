@@ -14,6 +14,13 @@ namespace MusicCollector.Tools
             //var model = (Album)base.BindModel(controllerContext, bindingContext);
             var minutes = controllerContext.HttpContext.Request["Item1.Duration.Minutes"];
             var seconds = controllerContext.HttpContext.Request["Item1.Duration.Seconds"];
+
+            if (minutes == null)
+            {
+                 minutes = controllerContext.HttpContext.Request["Duration.Minutes"];
+                 seconds = controllerContext.HttpContext.Request["Duration.Seconds"];
+            }
+
             var time = new TimeSpan(0, int.Parse(minutes), int.Parse(seconds));
             //model.Duration = time;
             //return model;

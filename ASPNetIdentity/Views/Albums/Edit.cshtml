@@ -41,7 +41,7 @@
             </div>
             @Html.LabelFor(model => model.Item1.Duration.Seconds, htmlAttributes: new { @class = "control-label col-md-2", @style = "text-align: left; width: 100px;" })
             <div class="col-md-10" style="width:100px;">
-                @Html.EditorFor(model => model.Item1.Duration.Seconds, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Item1.Duration.Seconds, new { htmlAttributes = new { @class = "form-control", max = 60 } })
                 @Html.ValidationMessageFor(model => model.Item1.Duration.Seconds, "", new { @class = "text-danger" })
             </div>
         </div>

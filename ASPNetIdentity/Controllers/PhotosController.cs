@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using MusicCollector.Models;
+using System.IO;
 
 namespace MusicCollector.Controllers
 {
@@ -57,10 +58,12 @@ namespace MusicCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EntryNo,AlbumNo,ReleaseNo,FilePath,UserUploaded")] Photo photo)
+        public ActionResult Create([Bind(Include = "EntryNo,AlbumNo,ReleaseNo,FilePath,UserUploaded,PostedFile")] Photo photo)
         {
             if (ModelState.IsValid)
             {
+                if (photo.PostedFile != null && photo.AlbumNo != null)
+                    photo.FilePath = Upload(photo.PostedFile, (int)photo.AlbumNo);
                 //photo.UserUploaded = User.Identity.Name;
                 db.Photos.Add(photo);
                 db.SaveChanges();
@@ -135,6 +138,9 @@ namespace MusicCollector.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Photo photo = db.Photos.Find(id);
+
+            DeleteFile(Path.Combine(MusicCollector.Properties.Resources.PHOTO_PATH + "/", photo.FilePath));
+
             db.Photos.Remove(photo);
             db.SaveChanges();
             return RedirectToAction("Index");
@@ -153,6 +159,61 @@ namespace MusicCollector.Controllers
             //return PartialView(model);
             return RedirectToAction("Create", new { albumNo = model.AlbumNo });
             //return View(); 
+        }
+
+        [HttpPost]
+        public ActionResult Upload(HttpPostedFileBase file)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                if (fileName.ToLower().EndsWith("png") || fileName.ToLower().EndsWith("jpg") || fileName.ToLower().EndsWith("jpeg"))
+                {
+                    //var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    var path = Path.Combine(MusicCollector.Properties.Resources.PHOTO_PATH, fileName);
+                    file.SaveAs(path);
+                }
+            }
+            var no = Request.QueryString["albumNo"];
+            if (no != null)
+                return RedirectToAction("Create", new { albumNo = no.ToString() });
+            else
+                return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// zapisuje fotke na dysku
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="albumNo"></param>
+        /// <returns></returns>
+        public string Upload(HttpPostedFileBase file, int albumNo)
+        {
+            if (file != null && file.ContentLength > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                if (fileName.ToLower().EndsWith("png") || fileName.ToLower().EndsWith("jpg") || fileName.ToLower().EndsWith("jpeg"))
+                {
+                    if (!Directory.Exists(MusicCollector.Properties.Resources.PHOTO_PATH + "/" + albumNo))
+                        Directory.CreateDirectory(MusicCollector.Properties.Resources.PHOTO_PATH + "/" + albumNo);
+
+                    //var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
+                    var path = Path.Combine(MusicCollector.Properties.Resources.PHOTO_PATH + "/" + albumNo, fileName);
+                    path = Tools.Utils.NextAvailableFilename(path);
+                    path = path.Replace(@"\", "/");
+                    file.SaveAs(path);
+                    return albumNo + "/" + path.Substring(path.LastIndexOf("/") + 1);
+                }
+            }
+
+            return "";
+        }
+
+        public void DeleteFile(string path)
+        {
+            FileInfo fi = new FileInfo(path);
+            if (fi.Exists)
+                fi.Delete();
         }
 
         protected override void Dispose(bool disposing)
