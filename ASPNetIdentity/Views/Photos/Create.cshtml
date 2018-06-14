@@ -1,15 +1,47 @@
 ﻿<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+@*<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>*@
 <script type="text/javascript">
-$(document).ready(function(){
-    $("#AlbumNo").on("change", function () {
-        alert($(this).val());
-        var form = document.forms[0];
-        console.log('form:');
-        console.log(eval(form));
+
+    $(document).ready(function () {
+        $("#AlbumNo").on("change", function () {
+            //var serviceURL = '/AjaxTest/FirstAjax';
+            var releases = $('#ReleaseNo');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("UpdateAlbumNo2", "Photos")',//serviceURL,
+                data: "{'albumNo' : '"+$(this).val()+"'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+
+
+            function successFunc(data, status) {
+                //alert(data);
+                releases.empty();
+                $.each(data, function (index, item) { // item is now an object containing properties ID and Text
+                    releases.append($('<option></option>').text(item.Text).val(item.ID));
+                });
+            }
+
+            function errorFunc() {
+                alert('error');
+            }
+        });
+    });
+
+//$(document).ready(function(){
+//    $("#AlbumNo").on("change", function () {
+//        alert($(this).val());
+//        var form = document.forms[0];
+//        console.log('form:');
+//        console.log(eval(form));
         
-   $("#AlbumEntryNo").val($(this).val());
- });
-});
+//   $("#AlbumEntryNo").val($(this).val());
+// });
+//});
 </script>
 
 @model MusicCollector.Models.Photo
@@ -33,7 +65,7 @@ $(document).ready(function(){
             @Html.LabelFor(model => model.AlbumNo, "AlbumNo", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
 
-                @using (Html.BeginForm("Create", "Photos", " UpdateAlbumNo"))
+                @*@using (Html.BeginForm("Create", "Photos", " UpdateAlbumNo"))
                 {
                     @Html.HiddenFor(model => model.AlbumEntryNo)
                      @Html.DropDownList( "AlbumNo", (SelectList)ViewBag.Values, htmlAttributes: new { @class = "form-control",
@@ -44,7 +76,8 @@ $(document).ready(function(){
                         console.log(form);
                         form.submit();"
                         })
-                }
+                }*@
+                @Html.DropDownList( "AlbumNo", (SelectList)ViewBag.Values, htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.AlbumNo, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -43,7 +43,7 @@ namespace MusicCollector.Controllers
             //ViewBag.AlbumNo = new SelectList(db.Album.Where(c=>c.EntryNo==albumNo).ToList() , "EntryNo", "MetaDescription");
             //wersja ddl bez filtrowania
             ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "MetaDescription");
-            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == albumNo).ToList(), "EntryNo", "ReleaseCode");
+            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == albumNo).ToList(), "EntryNo", "MetaDescription");
             //test
             //var rList = new List<Release>();
             //rList.Add(new Release() { EntryNo = 2343, ReleaseCode = "test", AlbumNo=3 });
@@ -70,8 +70,8 @@ namespace MusicCollector.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
-            ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
+            ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "MetaDescription", photo.AlbumNo);
+            ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "MetaDescription", photo.ReleaseNo);
             //ViewBag.UserUploaded = User.Identity.Name;
             return View(photo);
         }
@@ -89,7 +89,7 @@ namespace MusicCollector.Controllers
                 return HttpNotFound();
             }
             ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "MetaDescription");
-            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == photo.AlbumNo).ToList(), "EntryNo", "ReleaseCode");
+            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == photo.AlbumNo).ToList(), "EntryNo", "MetaDescription");
 
             //ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
             //ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
@@ -110,7 +110,7 @@ namespace MusicCollector.Controllers
                 return RedirectToAction("Index");
             }
             ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "MetaDescription");
-            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == photo.AlbumNo).ToList(), "EntryNo", "ReleaseCode");
+            ViewBag.ReleaseNo = new SelectList(db.Release.Where(c => c.AlbumNo == photo.AlbumNo).ToList(), "EntryNo", "MetaDescription");
 
             //ViewBag.AlbumNo = new SelectList(db.Album, "EntryNo", "Author", photo.AlbumNo);
             //ViewBag.ReleaseNo = new SelectList(db.Release, "EntryNo", "EntryNo", photo.ReleaseNo);
@@ -159,6 +159,33 @@ namespace MusicCollector.Controllers
             //return PartialView(model);
             return RedirectToAction("Create", new { albumNo = model.AlbumNo });
             //return View(); 
+        }
+
+        [HttpPost]
+        public JsonResult UpdateAlbumNo2(int albumNo)
+        {
+            var Releases = db.Release.Where(c => c.AlbumNo == albumNo).ToList();
+            if (!Releases.Any())
+                return Json("", JsonRequestBehavior.DenyGet);
+            else
+            {
+                var RelSelectList = Releases.Select(c => new
+                {
+                    Text = c.MetaDescription,
+                    ID = c.EntryNo
+                });
+                return Json(RelSelectList, JsonRequestBehavior.DenyGet);
+            }
+
+            return Json(albumNo + " trtrtr", JsonRequestBehavior.AllowGet);
+            //return RedirectToAction("Create", new { albumNo = albumNo });
+        }
+
+        [HttpPost]
+        public JsonResult UpdateAlbumNo3()
+        {
+            return Json(" trtrtr", JsonRequestBehavior.AllowGet);
+            //return RedirectToAction("Create", new { albumNo = albumNo });
         }
 
         [HttpPost]

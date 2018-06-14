@@ -61,6 +61,14 @@ namespace MusicCollector.Models
         public string ReleaseCode { get; set; }     //kod wydania 
 
         public virtual Album Album { get; set; }
+
+        public string MetaDescription
+        {
+            get
+            {
+                return string.Format("{0} - {1}", RecordCompany, ReleaseCode);
+            }
+        }
     }
 
     public class Photo
