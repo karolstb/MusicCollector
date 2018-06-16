@@ -61,7 +61,7 @@ namespace MusicCollector.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to C:\Users\Karlik\Documents\programowanie\MusicCollector repo\MusicPhotos.
+        ///   Looks up a localized string similar to C:\Users\Karlik\Documents\programowanie\MusicCollector repo\MusicCollector\ASPNetIdentity\App_Data\MusicPhotos\.
         /// </summary>
         internal static string PHOTO_PATH {
             get {

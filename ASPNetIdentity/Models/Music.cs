@@ -81,14 +81,15 @@ namespace MusicCollector.Models
         [ForeignKey("Release")]
         public int? ReleaseNo { get; set; }
         public virtual Release Release { get; set; }
+        public bool IsMain { get; set; }
 
-        public int AlbumEntryNo
-        {
-            get
-            {
-                return (AlbumNo == null) ? -1 : (int)AlbumNo;
-            }
-        }
+        //public int AlbumEntryNo
+        //{
+        //    get
+        //    {
+        //        return (AlbumNo == null) ? -1 : (int)AlbumNo;
+        //    }
+        //}
 
         public string FilePath { get; set; }
         public string UserUploaded { get; set; }

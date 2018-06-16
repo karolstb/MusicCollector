@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace MusicCollector.Tools
 {
@@ -52,5 +53,13 @@ namespace MusicCollector.Tools
 
             return string.Format(pattern, max);
         }
+    }
+
+
+    
+
+    public class UtilsModel
+    {
+        public string ImagesPath { get; set; }
     }
 }

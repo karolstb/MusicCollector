@@ -103,6 +103,11 @@
             @Html.DisplayFor(modelItem => item.UserUploaded)
         </td>
         <td>
+            @*<img src="@Url.Content(//)" alt="" />*@
+
+            @Html.Action("Utils", new { controller = "Utils" ,photoPath= item.FilePath })
+        </td>
+        <td>
             @Html.ActionLink( "Edit", "../Photos/Edit", new { id = item.EntryNo }) |
             @Html.ActionLink("Details", "../Photos/Details", new { id = item.EntryNo }) |
             @Html.ActionLink("Delete", "../Photos/Delete", new { id = item.EntryNo })

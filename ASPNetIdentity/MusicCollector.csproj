@@ -250,6 +250,7 @@
     <Compile Include="Controllers\AlbumsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
+    <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -280,6 +281,10 @@
     <Compile Include="Migrations\201806080801128_release2.cs" />
     <Compile Include="Migrations\201806080801128_release2.Designer.cs">
       <DependentUpon>201806080801128_release2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201806161213162_IsMain.cs" />
+    <Compile Include="Migrations\201806161213162_IsMain.Designer.cs">
+      <DependentUpon>201806161213162_IsMain.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -320,6 +325,7 @@
     <Content Include="Views\Photos\Details.cshtml" />
     <Content Include="Views\Photos\Edit.cshtml" />
     <Content Include="Views\Photos\Index.cshtml" />
+    <Content Include="Views\Utils\Utils.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -352,6 +358,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806080801128_release2.resx">
       <DependentUpon>201806080801128_release2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201806161213162_IsMain.resx">
+      <DependentUpon>201806161213162_IsMain.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

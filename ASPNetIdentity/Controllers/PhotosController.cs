@@ -58,7 +58,7 @@ namespace MusicCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "EntryNo,AlbumNo,ReleaseNo,FilePath,UserUploaded,PostedFile")] Photo photo)
+        public ActionResult Create([Bind(Include = "EntryNo,AlbumNo,ReleaseNo,FilePath,UserUploaded,PostedFile,IsMain")] Photo photo)
         {
             if (ModelState.IsValid)
             {
