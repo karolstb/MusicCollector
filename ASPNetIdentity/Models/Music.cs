@@ -61,6 +61,7 @@ namespace MusicCollector.Models
         public string ReleaseCode { get; set; }     //kod wydania 
 
         public virtual Album Album { get; set; }
+        //public virtual CollectionEntry CollectionEntry { get; set; }
 
         public string MetaDescription
         {
@@ -95,5 +96,26 @@ namespace MusicCollector.Models
         public string UserUploaded { get; set; }
         [NotMapped]
         public HttpPostedFileBase PostedFile { get; set; }
+    }
+
+    /// <summary>
+    /// wpisy kolekcji. czyli plyty jakie ma w kolekcji dany user
+    /// </summary>
+    public class CollectionEntry
+    {
+        [Key, Column(Order =1)]
+        [ForeignKey("User")]
+        public string UserNo { get; set; }
+        public virtual MyApplicationUser User { get; set; }
+        [Key, Column(Order = 2)]
+        [ForeignKey("Album")]
+        public int? AlbumNo { get; set; }
+        public virtual Album Album { get; set; }
+        [Key, Column(Order = 3)]
+        [ForeignKey("Release")]
+        public int? ReleaseNo { get; set; }
+        public virtual Release Release { get; set; }
+
+        public string Comment { get; set; }
     }
 }

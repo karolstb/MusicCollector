@@ -4,6 +4,8 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
+using System.Web.Security;
 
 namespace MusicCollector.Tools
 {
@@ -61,5 +63,43 @@ namespace MusicCollector.Tools
     public class UtilsModel
     {
         public string ImagesPath { get; set; }
+    }
+
+    
+}
+
+namespace MusicCollector
+{
+    public static class LinkExtensions
+    {
+        public static IHtmlString ActionLinkIfInRole(
+            this HtmlHelper htmlHelper,
+            string roles,
+            string linkText,
+            string action
+        )
+        {
+            if (!Roles.IsUserInRole(roles))
+            {
+                return MvcHtmlString.Empty;
+            }
+            return htmlHelper.ActionLink(linkText, action);
+        }
+
+        public static IHtmlString ActionLinkIfAuthorize(
+            this HtmlHelper htmlHelper,
+            string linkText,
+            string action,
+            string controller,
+            object routeValues,
+            object htmlAttributes
+        )
+        {
+            if (!HttpContext.Current.User.Identity.IsAuthenticated)
+            {
+                return MvcHtmlString.Empty;
+            }
+            return htmlHelper.ActionLink(linkText, action, controller, routeValues, htmlAttributes);
+        }
     }
 }

@@ -139,7 +139,8 @@ namespace MusicCollector.Controllers
         {
             Photo photo = db.Photos.Find(id);
 
-            DeleteFile(Path.Combine(MusicCollector.Properties.Resources.PHOTO_PATH + "/", photo.FilePath));
+            if (photo.FilePath != null)
+                DeleteFile(Path.Combine(MusicCollector.Properties.Resources.PHOTO_PATH + "/", photo.FilePath));
 
             db.Photos.Remove(photo);
             db.SaveChanges();

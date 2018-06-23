@@ -36,9 +36,21 @@ namespace MusicCollector.Models
             return new MyApplicationDbContext();
         }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            //modelBuilder.Entity<Release>().HasRequired(c => c.CollectionEntry).WithMany().WillCascadeOnDelete(false);
+            base.OnModelCreating(modelBuilder);
+
+            //modelBuilder.Entity<CollectionEntry>().HasRequired(c => c.Release).WithMany().WillCascadeOnDelete(false);
+            //modelBuilder.Entity<Release>().HasRequired(c => c.CollectionEntry).WithMany().WillCascadeOnDelete(false);
+
+            //modelBuilder.Entity<CollectionEntry>().HasRequired(c => c.Release).WithMany().WillCascadeOnDelete(false);
+        }
+
         public DbSet<Album> Album { get; set; }
         public DbSet<Release> Release { get; set; }
         public DbSet<Photo> Photos { get; set; }
+        public DbSet<CollectionEntry> CollectionEntry { get; set; }
     }
 
     ///// <summary>
