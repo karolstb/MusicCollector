@@ -22,8 +22,39 @@
         //$('#timepicker\\.\\[1\\]').timepicker({
         //    showAnim: 'blind'
         //});
-        $('.timepicker').timepicker({
-            showAnim: 'blind'
+        //$('.timepicker').timepicker({
+        //    showAnim: 'blind'
+        //});
+
+        $("#Title").on("change", function () {
+            //var serviceURL = '/AjaxTest/FirstAjax';
+            var authorTxt = $('#Author');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("SearchForCoverImage", "Albums")',//serviceURL,
+                data: "{'author' : '" + $(this).val() + "', 'title' : '" + authorTxt.val() + "'}",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: successFunc,
+                error: errorFunc
+            });
+
+
+            function successFunc(data, status) {
+                var coverArtImg = $('#CoverArtImg');
+                //alert('sukces ' + coverArtImg);
+                //alert('sukces ' + data.ImageBase64);
+                //coverArtImg.src = "data:image/gif;base64," + data.ImageBase64;
+                coverArtImg.attr("src", "data:image/gif;base64," + data.ImageBase64);
+                //releases.empty();
+                //$.each(data, function (index, item) { // item is now an object containing properties ID and Text
+                //    releases.append($('<option></option>').text(item.Text).val(item.ID));
+                //});
+            }
+
+            function errorFunc() {
+                alert('nie udało się pobrać obazka');
+            }
         });
     });
 </script>
@@ -88,6 +119,14 @@
                 @Html.ValidationMessageFor(model => model.YearOfProduction, "", new { @class = "text-danger" })
             </div>
         </div>
+
+        <div class="form-group">
+            <p class="control-label col-md-2"><b>Okładka:</b></p>
+            <div class="col-md-10">
+                <img id="CoverArtImg" src="" width="250px" />
+            </div>
+        </div>
+        
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
