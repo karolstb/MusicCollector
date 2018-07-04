@@ -19,6 +19,7 @@
     //    $('.durationpicker').tim.timepicker();
     //})
     $(document).ready(function () {
+        //@ViewBag.MyVariable = 1;
         //$('#timepicker\\.\\[1\\]').timepicker({
         //    showAnim: 'blind'
         //});
@@ -26,37 +27,57 @@
         //    showAnim: 'blind'
         //});
 
-        $("#Title").on("change", function () {
-            //var serviceURL = '/AjaxTest/FirstAjax';
-            var authorTxt = $('#Author');
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("SearchForCoverImage", "Albums")',//serviceURL,
-                data: "{'author' : '" + $(this).val() + "', 'title' : '" + authorTxt.val() + "'}",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: successFunc,
-                error: errorFunc
-            });
+        $("#Title").on("change", function ()
+        {
+            alert("change");
+            LoadCoverImage(1)
+        });
 
-
-            function successFunc(data, status) {
-                var coverArtImg = $('#CoverArtImg');
-                //alert('sukces ' + coverArtImg);
-                //alert('sukces ' + data.ImageBase64);
-                //coverArtImg.src = "data:image/gif;base64," + data.ImageBase64;
-                coverArtImg.attr("src", "data:image/gif;base64," + data.ImageBase64);
-                //releases.empty();
-                //$.each(data, function (index, item) { // item is now an object containing properties ID and Text
-                //    releases.append($('<option></option>').text(item.Text).val(item.ID));
-                //});
-            }
-
-            function errorFunc() {
-                alert('nie udało się pobrać obazka');
-            }
+        $("#LoadNextImageBtn").on("click", function () {
+            //var orderStr = '@ViewBag.OrderNo'; //@Html.Raw(Json.Encode(ViewBag.OrderNo));
+            var orderStr = $('#ImageSearchOrderHidden').val();
+            var orderNo = parseInt(orderStr);
+            LoadCoverImage(orderNo++)
+            $('#ImageSearchOrderHidden').val(orderNo);
         });
     });
+
+    function LoadCoverImage(order) {
+        //var serviceURL = '/AjaxTest/FirstAjax';
+        var authorTxt = $('#Author');
+        var titleTxt = $("#Title");
+        //var orderHidden = $("#ImageSearchOrderHidden");
+        alert(authorTxt.val() + " - " + titleTxt.val() + " - " + order);
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("SearchForCoverImage", "Albums")',//serviceURL,
+            data: "{'author' : '" + titleTxt.val() + "', 'title' : '" + authorTxt.val() + "', 'order' : '"+order+"'}",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: successFunc,
+            error: errorFunc
+        });
+
+
+        function successFunc(data, status) {
+            if (data.ImageBase64 == "")
+                return;
+
+            var coverArtImg = $('#CoverArtImg');
+            //alert('sukces ' + coverArtImg);
+            //alert('sukces ' + data.ImageBase64);
+            //coverArtImg.src = "data:image/gif;base64," + data.ImageBase64;
+            coverArtImg.attr("src", "data:image/gif;base64," + data.ImageBase64);
+            //releases.empty();
+            //$.each(data, function (index, item) { // item is now an object containing properties ID and Text
+            //    releases.append($('<option></option>').text(item.Text).val(item.ID));
+            //});
+        }
+
+        function errorFunc() {
+            alert('nie udało się pobrać obazka');
+        }
+    }
 </script>
 
 @model MusicCollector.Models.Album
@@ -124,6 +145,11 @@
             <p class="control-label col-md-2"><b>Okładka:</b></p>
             <div class="col-md-10">
                 <img id="CoverArtImg" src="" width="250px" />
+            </div>
+            <div>
+                <input id="LoadNextImageBtn" value="Szukaj innego" type="button"/>
+                @*@Html.HiddenFor(m => m.MyHiddenId, new { id = "ImageSearchOrderHidden" })*@
+                <input id="ImageSearchOrderHidden"  type="hidden" value="1" />
             </div>
         </div>
         
