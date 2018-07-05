@@ -227,7 +227,7 @@ namespace MusicCollector.Controllers
 
                     //var path = Path.Combine(Server.MapPath("~/Images/"), fileName);
                     var path = Path.Combine(MusicCollector.Properties.Resources.PHOTO_PATH + "/" + albumNo, fileName);
-                    path = Tools.Utils.NextAvailableFilename(path);
+                    path = Utils.NextAvailableFilename(path);
                     path = path.Replace(@"\", "/");
                     file.SaveAs(path);
                     return albumNo + "/" + path.Substring(path.LastIndexOf("/") + 1);

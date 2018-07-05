@@ -8,7 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Security;
 
-namespace MusicCollector.Tools
+namespace MusicCollector
 {
     public static class Utils
     {
@@ -134,20 +134,61 @@ namespace MusicCollector.Tools
         }
         #endregion
     }
-
-
-
-
+    
     public class UtilsModel
     {
         public string ImagesPath { get; set; }
+        public int PhotoEntryNo { get; set; }
     }
 
-    
+    /// <summary>
+    /// klasa dziedziczy po action result i obiekt tej klasy moze być zwrócony przez akcje z kontrolera
+    /// jako link na przykłąd
+    /// https://blogs.msdn.microsoft.com/miah/2008/11/13/extending-mvc-returning-an-image-from-a-controller-action/
+    /// </summary>
+    public class ImageResult : ActionResult
+    {
+        public ImageResult(Stream imageStream, string contentType)
+        {
+            if (imageStream == null)
+                throw new ArgumentNullException("imageStream");
+            if (contentType == null)
+                throw new ArgumentNullException("contentType");
+
+            this.ImageStream = imageStream;
+            this.ContentType = contentType;
+        }
+
+        public Stream ImageStream { get; private set; }
+        public string ContentType { get; private set; }
+
+        public override void ExecuteResult(ControllerContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException("context");
+
+            HttpResponseBase response = context.HttpContext.Response;
+
+            response.ContentType = this.ContentType;
+
+            byte[] buffer = new byte[4096];
+            while (true)
+            {
+                int read = this.ImageStream.Read(buffer, 0, buffer.Length);
+                if (read == 0)
+                    break;
+
+                response.OutputStream.Write(buffer, 0, read);
+            }
+
+            response.End();
+        }
+    }
 }
 
 namespace MusicCollector
 {
+    //rozszerza HtmlHelper
     public static class LinkExtensions
     {
         public static IHtmlString ActionLinkIfInRole(
@@ -178,6 +219,20 @@ namespace MusicCollector
                 return MvcHtmlString.Empty;
             }
             return htmlHelper.ActionLink(linkText, action, controller, routeValues, htmlAttributes);
+        }
+    }
+
+    //rozszerza Controller
+    public static class ControllerExtensions
+    {
+        public static ImageResult Image(this Controller controller, Stream imageStream, string contentType)
+        {
+            return new ImageResult(imageStream, contentType);
+        }
+
+        public static ImageResult Image(this Controller controller, byte[] imageBytes, string contentType)
+        {
+            return new ImageResult(new MemoryStream(imageBytes), contentType);
         }
     }
 }

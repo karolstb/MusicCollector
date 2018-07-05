@@ -1,6 +1,9 @@
-﻿@model MusicCollector.Tools.UtilsModel
+﻿@model MusicCollector.UtilsModel
 
-
+@*<a class="uk-thumbnail" href="@String.Format("data:image/png;base64,{0}",Model.ImagesPath )"  
+    data-lightbox-type="image" title="IMG title">*@
     @*<img src="@Url.Content(Model.ImagesPath)" alt="" />*@
-<img src="@String.Format("data:image/png;base64,{0}",Model.ImagesPath )" width="250px"/>
+    <a href="@String.Format("../../Utils/Image/{0}", Model.PhotoEntryNo)" data-lightbox="image-1" data-title="My caption">
+        <img src="@String.Format("data:image/png;base64,{0}", Model.ImagesPath )" width="250" />
+    </a>
 

@@ -1,4 +1,8 @@
-﻿@model Tuple<MusicCollector.Models.Album, ICollection<MusicCollector.Models.Photo>>
+﻿<link href="~/Content/lightbox.css" rel="stylesheet">
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/lightbox-2.6.min.js"></script>
+
+@model Tuple<MusicCollector.Models.Album, ICollection<MusicCollector.Models.Photo>>
 @*@model   MusicCollector.Models.Album*@
 
 @{
@@ -105,7 +109,7 @@
         <td>
             @*<img src="@Url.Content(//)" alt="" />*@
 
-            @Html.Action("Utils", new { controller = "Utils" ,photoPath= item.FilePath })
+            @Html.Action("Utils", new { controller = "Utils" , photoId = item.EntryNo })
         </td>
         <td>
             @Html.ActionLink( "Edit", "../Photos/Edit", new { id = item.EntryNo }) |
