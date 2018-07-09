@@ -15,7 +15,10 @@
             @Html.DisplayNameFor(model => model.Album.Author)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Release.RecordCompany)
+            @Html.DisplayNameFor(model => model.Album.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Release.MetaDescription)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.User.Email)
@@ -32,7 +35,10 @@
             @Html.DisplayFor(modelItem => item.Album.Author)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Release.RecordCompany)
+            @Html.DisplayFor(modelItem => item.Album.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Release.MetaDescription)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.User.Email)
@@ -41,9 +47,9 @@
             @Html.DisplayFor(modelItem => item.Comment)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            @*@Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |*@
+            @Html.ActionLink("Details", "Details", new {  hashControlValue = item.HashControlValue }) |
+            @Html.ActionLink("Delete", "Delete", new { hashControlValue = item.HashControlValue })
         </td>
     </tr>
 }

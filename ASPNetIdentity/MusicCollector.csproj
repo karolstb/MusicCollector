@@ -242,11 +242,20 @@
     <Content Include="sass\_variables.sass" />
     <Content Include="sass\screen.sass" />
     <Content Include="sass\lightbox.sass" />
+    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\jquery-1.10.2.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.js" />
     <Content Include="Scripts\jquery-ui-1.12.1.min.js" />
+    <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.validate.js" />
+    <Content Include="Scripts\jquery.validate.min.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
+    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\lightbox-2.6.js" />
     <Content Include="Scripts\lightbox-2.6.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
@@ -301,6 +310,10 @@
     <Compile Include="Migrations\201806231701034_collectionentry.Designer.cs">
       <DependentUpon>201806231701034_collectionentry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201807061707538_collectionentry2.cs" />
+    <Compile Include="Migrations\201807061707538_collectionentry2.Designer.cs">
+      <DependentUpon>201807061707538_collectionentry2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
@@ -346,6 +359,7 @@
     <Content Include="Views\CollectionEntries\Details.cshtml" />
     <Content Include="Views\CollectionEntries\Edit.cshtml" />
     <Content Include="Views\CollectionEntries\Index.cshtml" />
+    <Content Include="Views\Albums\IndexModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -384,6 +398,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201806231701034_collectionentry.resx">
       <DependentUpon>201806231701034_collectionentry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201807061707538_collectionentry2.resx">
+      <DependentUpon>201807061707538_collectionentry2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

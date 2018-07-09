@@ -1,0 +1,69 @@
+﻿@model IEnumerable<MusicCollector.Models.Album>
+
+
+@{ 
+    int _startIndex = 0;
+    var startIndexTmp = ViewBag.StartIndex;
+    if (startIndexTmp != null)
+    {
+        _startIndex = Convert.ToInt32(startIndexTmp);
+    }
+}
+
+<div class="modal-header">
+    <button type="button" class="closebtn" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel">Lista albumów</h4>
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Duration)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.YearOfProduction)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DurationStr)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.YearOfProduction)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.EntryNo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.EntryNo }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.EntryNo })
+        </td>
+    </tr>
+}
+
+
+</table>
+
+
+@Html.ActionLink("następna strona", "IndexModal", new
+{
+    query = "test",
+    startIndex = _startIndex + 2,
+    pageSize = 2
+})

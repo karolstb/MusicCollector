@@ -23,13 +23,13 @@ namespace MusicCollector.Controllers
         }
 
         // GET: CollectionEntries/Details/5
-        public ActionResult Details(string id)
+        public ActionResult Details(string hashControlValue)
         {
-            if (id == null)
+            if (hashControlValue == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CollectionEntry collectionEntry = db.CollectionEntry.Find(id);
+            CollectionEntry collectionEntry = db.CollectionEntry.Where(c => c.HashControlValue == hashControlValue).FirstOrDefault();//.Find(id);
             if (collectionEntry == null)
             {
                 return HttpNotFound();
@@ -55,6 +55,7 @@ namespace MusicCollector.Controllers
         {
             if (ModelState.IsValid)
             {
+                collectionEntry.HashControlValue = Utils.GetStringSha256Hash(collectionEntry.UserNo + collectionEntry.AlbumNo + collectionEntry.ReleaseNo);
                 db.CollectionEntry.Add(collectionEntry);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -69,6 +70,9 @@ namespace MusicCollector.Controllers
         // GET: CollectionEntries/Edit/5
         public ActionResult Edit(string id)
         {
+            //wyłąono możliwosć edycji 
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Brak możliwości edycji");
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -90,7 +94,9 @@ namespace MusicCollector.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "UserNo,AlbumNo,ReleaseNo,Comment")] CollectionEntry collectionEntry)
-        {
+        { 
+            //wyłąono możliwosć edycji 
+            return new HttpStatusCodeResult(HttpStatusCode.BadRequest, "Brak możliwości edycji");
             if (ModelState.IsValid)
             {
                 db.Entry(collectionEntry).State = EntityState.Modified;
@@ -104,13 +110,13 @@ namespace MusicCollector.Controllers
         }
 
         // GET: CollectionEntries/Delete/5
-        public ActionResult Delete(string id)
+        public ActionResult Delete(string hashControlValue)
         {
-            if (id == null)
+            if (hashControlValue == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            CollectionEntry collectionEntry = db.CollectionEntry.Find(id);
+            CollectionEntry collectionEntry = db.CollectionEntry.Where(c => c.HashControlValue == hashControlValue).FirstOrDefault();//.Find(id);
             if (collectionEntry == null)
             {
                 return HttpNotFound();
@@ -121,9 +127,9 @@ namespace MusicCollector.Controllers
         // POST: CollectionEntries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(string id)
+        public ActionResult DeleteConfirmed(string hashControlValue)
         {
-            CollectionEntry collectionEntry = db.CollectionEntry.Find(id);
+            CollectionEntry collectionEntry = db.CollectionEntry.Where(c => c.HashControlValue == hashControlValue).FirstOrDefault();//.Find(id);
             db.CollectionEntry.Remove(collectionEntry);
             db.SaveChanges();
             return RedirectToAction("Index");

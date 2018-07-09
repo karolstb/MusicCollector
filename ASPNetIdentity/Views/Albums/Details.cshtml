@@ -1,4 +1,9 @@
-﻿@model MusicCollector.Models.Album
+﻿<link href="~/Content/lightbox.css" rel="stylesheet">
+<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/lightbox-2.6.min.js"></script>
+
+@model Tuple<MusicCollector.Models.Album, ICollection<MusicCollector.Models.Photo>>
+@*@model MusicCollector.Models.Album*@
 
 @{
     ViewBag.Title = "Details";
@@ -11,32 +16,50 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.Item1.Author)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Author)
+            @Html.DisplayFor(model => model.Item1.Author)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Item1.Title)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Item1.Title)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Duration)
+            @Html.DisplayNameFor(model => model.Item1.Duration)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.DurationStr);
+            @Html.DisplayFor(model => model.Item1.DurationStr);
         </dd>
 
     </dl>
 </div>
+
+
+<table class="table">
+   
+    <tr>
+
+        @foreach (var item in Model.Item2)
+        {
+            <td>
+                @*<img src="@Url.Content(//)" alt="" />*@
+
+                @Html.Action("Utils", new { controller = "Utils", photoId = item.EntryNo })
+            </td>
+        }
+    </tr>
+</table>
+
+
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EntryNo }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Item1.EntryNo }) |
     @Html.ActionLink("Back to List", "Index")
 </p>

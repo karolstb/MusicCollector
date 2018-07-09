@@ -117,5 +117,6 @@ namespace MusicCollector.Models
         public virtual Release Release { get; set; }
 
         public string Comment { get; set; }
+        public string HashControlValue { get; set; }    //zawiera hash z klucza głównego na potrzeby CRUD'a, żeby nie dawać do url GUID usera
     }
 }

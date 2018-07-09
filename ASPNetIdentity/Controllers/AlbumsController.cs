@@ -22,6 +22,26 @@ namespace MusicCollector.Controllers
             return View(db.Album.ToList());
         }
 
+        //na potrezeby okna modalnego
+        [HttpGet]
+        public ActionResult IndexModal(string query, int startIndex, int pageSize)
+        {
+            ViewBag.StartIndex = startIndex;
+            var albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);//.ToList();
+            //var albumList = db.Album.ToList();
+            return PartialView("IndexModal", albumList);
+        }
+
+        [HttpPost]
+        [ActionName("IndexModal")]
+        public ActionResult IndexModalPost(string query, int startIndex, int pageSize)
+        {
+            ViewBag.StartIndex = startIndex;
+            var albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);//.ToList();
+            //var albumList = db.Album.ToList();
+            return PartialView("IndexModal", albumList);
+        }
+
         // GET: Albums/Details/5
         public ActionResult Details(int? id)
         {
@@ -34,7 +54,11 @@ namespace MusicCollector.Controllers
             {
                 return HttpNotFound();
             }
-            return View(album);
+
+            List<Photo> photoList = db.Photos.Where(c => c.AlbumNo == album.EntryNo).ToList();
+            return View(new Tuple<Album, ICollection<Photo>>(album, photoList));
+
+            //return View(album);
         }
 
         // GET: Albums/Create
