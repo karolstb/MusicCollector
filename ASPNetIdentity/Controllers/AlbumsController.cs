@@ -24,23 +24,25 @@ namespace MusicCollector.Controllers
 
         //na potrezeby okna modalnego
         [HttpGet]
-        public ActionResult IndexModal(string query, int startIndex, int pageSize)
+        public ActionResult AlbumModal(string query, int startIndex, int pageSize)
         {
             ViewBag.StartIndex = startIndex;
             var albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);//.ToList();
             //var albumList = db.Album.ToList();
-            return PartialView("IndexModal", albumList);
+            return PartialView("AlbumModal", albumList);
         }
 
         [HttpPost]
-        [ActionName("IndexModal")]
-        public ActionResult IndexModalPost(string query, int startIndex, int pageSize)
+        [ActionName("AlbumModal")]
+        public ActionResult AlbumModalPost(string query, int startIndex, int pageSize)
         {
             ViewBag.StartIndex = startIndex;
             var albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);//.ToList();
             //var albumList = db.Album.ToList();
-            return PartialView("IndexModal", albumList);
+            return PartialView("AlbumModal", albumList);
         }
+
+       
 
         // GET: Albums/Details/5
         public ActionResult Details(int? id)
@@ -250,6 +252,18 @@ namespace MusicCollector.Controllers
 
             return Json(author+" "+title + " trtrtr", JsonRequestBehavior.AllowGet);
             //return RedirectToAction("Create", new { albumNo = albumNo });
+        }
+
+        [HttpPost]
+        public JsonResult GetAlbumInfo(int id)
+        {
+            var album = db.Album.Where(c => c.EntryNo == id).FirstOrDefault();
+            if(album!=null)
+            {
+                var data = new { AlbumID = album.EntryNo, AlbumDesc = album.MetaDescription };
+                return Json(data);
+            }
+            return Json("Nie znalazło albumu", JsonRequestBehavior.AllowGet);
         }
 
         protected override void Dispose(bool disposing)

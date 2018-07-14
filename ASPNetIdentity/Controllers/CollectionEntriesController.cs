@@ -135,6 +135,11 @@ namespace MusicCollector.Controllers
             return RedirectToAction("Index");
         }
 
+        //public ActionResult SetAlbum(int id)
+        //{
+        //    return View();
+        //}
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

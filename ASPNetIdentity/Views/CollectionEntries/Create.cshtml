@@ -4,7 +4,7 @@
 
 <script type="text/javascript">
     //$(document).ready(function () {
-    var AlbumListPostBackURL = '/Albums/IndexModal';
+    //var AlbumListPostBackURL = '/Albums/IndexModal';
     $(function () {
         $(".anchorAlbum").click(function () {
             //debugger;
@@ -15,7 +15,7 @@
                 //type: "GET",
                 //url: AlbumListPostBackURL,
                 type: "POST",
-                url: '@Url.Action("IndexModal", "Albums")',
+                url: '@Url.Action("AlbumModal", "Albums")',
                 contentType: "application/json; charset=utf-8",
                 data: "{'query' : '" + id + "', startIndex : 0, pageSize :  2}",//{ "query": id },
                 datatype: "json",
@@ -31,8 +31,37 @@
                 }
             });
         });
-        //$("#closebtn").on('click',function(){  
-        //    $('#myModal').modal('hide');    
+        //$("#closebtn").on('click',function(){
+        //    $('#myModal').modal('hide');
+
+
+        $(".anchorRelease").click(function () {
+            //debugger;
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+            var albumNo = $('#AlbumNo').val();
+            var options = { "backdrop": "static", keyboard: true };
+            $.ajax({
+                //type: "GET",
+                //url: AlbumListPostBackURL,
+                type: "POST",
+                url: '@Url.Action("ReleaseModal", "Releases")',
+                contentType: "application/json; charset=utf-8",
+                data: "{'albumNo' : " + albumNo + ", 'query' : '" + id + "', startIndex : 0, pageSize :  5}",//{ "query": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    $('#myModalContent').html(data);
+                    $('#myModal').modal(options);
+                    $('#myModal').modal('show');
+
+                },
+                error: function () {
+                    alert("Nie udało się załadować listy albumów.");
+                }
+            });
+        });
+
 
         $("#closbtn").click(function () {
             $('#myModal').modal('hide');
@@ -76,11 +105,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.AlbumNo, "AlbumNo", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("AlbumNo", null, htmlAttributes: new { @class = "form-control" })
-                @Html.TextBoxFor(Model=>Model.AlbumNo, htmlAttributes: new { @class = "form-control" })
+                @*@Html.DropDownList("AlbumNo", null, htmlAttributes: new { @class = "form-control" })*@
+                @*@Html.TextBoxFor(Model=>Model.AlbumNo, htmlAttributes: new { @class = "form-control" })*@
+                @Html.HiddenFor(Model => Model.AlbumNo, htmlAttributes: new { @class = "form-control" })
+                <label id="AlbumDescriptionTxt"></label>
                 @Html.ValidationMessageFor(model => model.AlbumNo, "", new { @class = "text-danger" })
-
-                @*@using (Model) {*@
                 <a href="javascript:void(0);" class="anchorAlbum" data-id="@albumEntryNo">Podaj Album</a>
             </div>
         </div>
@@ -88,8 +117,11 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ReleaseNo, "ReleaseNo", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("ReleaseNo", null, htmlAttributes: new { @class = "form-control" })
+                @*@Html.DropDownList("ReleaseNo", null, htmlAttributes: new { @class = "form-control" })*@
+                @Html.HiddenFor(Model => Model.ReleaseNo, htmlAttributes: new { @class = "form-control" })
+                <label id="ReleaseDescriptionTxt"></label>
                 @Html.ValidationMessageFor(model => model.ReleaseNo, "", new { @class = "text-danger" })
+                <a href="javascript:void(0);" class="anchorRelease" data-id="@albumEntryNo">Podaj Wydanie</a>
             </div>
         </div>
 

@@ -1,5 +1,37 @@
 ﻿@model IEnumerable<MusicCollector.Models.Album>
 
+<script>
+    $(function () {
+        $(".anchorSetAlbum").click(function () {
+            //debugger;
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+
+            $.ajax({
+                //type: "GET",
+                //url: AlbumListPostBackURL,
+                type: "POST",
+                url: '@Url.Action("GetAlbumInfo", "Albums")',
+                contentType: "application/json; charset=utf-8",
+                data: "{'id' : '" + id + "'}",//{ "query": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    //$('#myModalContent').html(data);
+                    //$('#myModal').modal(options);
+                    //$('#myModal').modal('show');
+
+                    $('#AlbumNo').val(data.AlbumID);
+                    $('#AlbumDescriptionTxt').html(data.AlbumDesc)
+                    $('#myModal').modal('hide');
+                },
+                error: function () {
+                    alert("Nie udało się pobrać albumu.");
+                }
+            });
+        });
+    });
+</script>
 
 @{ 
     int _startIndex = 0;
@@ -52,7 +84,10 @@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.EntryNo }) |
             @Html.ActionLink("Details", "Details", new { id=item.EntryNo }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.EntryNo })
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.EntryNo })*@
+            @*<a href="@Url.Action("SetAlbum","CollectionEntries",new { id=item.EntryNo });" 
+               onclick="SetName();">Select</a>*@
+            <a href="javascript:void(0);" class="anchorSetAlbum" data-id="@item.EntryNo">Wybierz</a>
         </td>
     </tr>
 }
@@ -61,7 +96,7 @@
 </table>
 
 
-@Html.ActionLink("następna strona", "IndexModal", new
+@Html.ActionLink("następna strona", "AlbumModal", new
 {
     query = "test",
     startIndex = _startIndex + 2,

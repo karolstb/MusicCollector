@@ -1,0 +1,99 @@
+﻿@model IEnumerable<MusicCollector.Models.Release>
+<script>
+    $(function () {
+        $(".anchorSetRelease").click(function () {
+            //debugger;
+            var $buttonClicked = $(this);
+            var id = $buttonClicked.attr('data-id');
+
+            $.ajax({
+                //type: "GET",
+                //url: AlbumListPostBackURL,
+                type: "POST",
+                url: '@Url.Action("GetReleaseInfo", "Releases")',
+                contentType: "application/json; charset=utf-8",
+                data: "{'id' : '" + id + "'}",//{ "query": id },
+                datatype: "json",
+                success: function (data) {
+                    //debugger;
+                    //$('#myModalContent').html(data);
+                    //$('#myModal').modal(options);
+                    //$('#myModal').modal('show');
+
+                    $('#ReleaseNo').val(data.ReleaseID);
+                    $('#ReleaseDescriptionTxt').html(data.ReleaseDesc)
+                    $('#myModal').modal('hide');
+                },
+                error: function () {
+                    alert("Nie udało się pobrać wydań.");
+                }
+            });
+        });
+    });
+</script>
+
+@{
+    int _startIndex = 0;
+    var startIndexTmp = ViewBag.StartIndex;
+    if (startIndexTmp != null)
+    {
+        _startIndex = Convert.ToInt32(startIndexTmp);
+    }
+}
+
+<div class="modal-header">
+    <button type="button" class="closebtn" data-dismiss="modal" aria-hidden="true">×</button>
+    <h4 class="modal-title" id="myModalLabel">Lista wydań</h4>
+</div>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Album.Author)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Album.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.RecordCompany)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReleaseCode)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Album.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Album.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RecordCompany)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReleaseCode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.EntryNo }) |
+            @Html.ActionLink("Details", "Details", new { id=item.EntryNo }) |
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.EntryNo })*@
+            <a href="javascript:void(0);" class="anchorSetRelease" data-id="@item.EntryNo">Wybierz</a>
+        </td>
+    </tr>
+}
+
+</table>
+@Html.ActionLink("następna strona", "ReleaseModal", new
+{
+    albumNo = ViewBag.AlbumNo,
+    query = "test",
+    startIndex = _startIndex + 5,
+    pageSize = 5
+})

@@ -270,6 +270,7 @@
     <Compile Include="Controllers\CollectionEntriesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PhotosController.cs" />
+    <Compile Include="Controllers\ReleasesController.cs" />
     <Compile Include="Controllers\UtilsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -359,7 +360,13 @@
     <Content Include="Views\CollectionEntries\Details.cshtml" />
     <Content Include="Views\CollectionEntries\Edit.cshtml" />
     <Content Include="Views\CollectionEntries\Index.cshtml" />
-    <Content Include="Views\Albums\IndexModal.cshtml" />
+    <Content Include="Views\Albums\AlbumModal.cshtml" />
+    <Content Include="Views\Releases\Create.cshtml" />
+    <Content Include="Views\Releases\Delete.cshtml" />
+    <Content Include="Views\Releases\Details.cshtml" />
+    <Content Include="Views\Releases\Edit.cshtml" />
+    <Content Include="Views\Releases\Index.cshtml" />
+    <Content Include="Views\Releases\ReleaseModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
