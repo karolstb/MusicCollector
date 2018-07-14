@@ -6,6 +6,13 @@
 
 <h2>Index</h2>
 
+@using (Html.BeginForm("Index", "Albums", FormMethod.Post))
+{
+<p>
+    Szukaj: <input id = "searchString" name = "searchString" type = "text" /> <input type = "submit"  value = "Szukaj" />
+          </p>
+}
+
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
     @Html.ActionLink("Create New", "Create", new { defaultYearOfProduction = 2000, minutes = 30 })

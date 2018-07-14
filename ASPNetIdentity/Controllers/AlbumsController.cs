@@ -17,8 +17,15 @@ namespace MusicCollector.Controllers
         private MyApplicationDbContext db = new MyApplicationDbContext();
 
         // GET: Albums
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToUpper();
+                var filteredList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString) 
+                    || c.Title.ToUpper().Contains(searchString)).ToList();
+                return View(filteredList);
+            }
             return View(db.Album.ToList());
         }
 

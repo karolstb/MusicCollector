@@ -47,6 +47,13 @@
     <h4 class="modal-title" id="myModalLabel">Lista albumów</h4>
 </div>
 
+@using (Html.BeginForm("Index", "Albums", FormMethod.Post))
+{
+    <p>
+        Szukaj: <input id="searchString" name="searchString" type="text" /> <input type="submit" value="Szukaj" />
+    </p>
+}
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
