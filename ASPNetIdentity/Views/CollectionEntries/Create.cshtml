@@ -17,7 +17,7 @@
                 type: "POST",
                 url: '@Url.Action("AlbumModal", "Albums")',
                 contentType: "application/json; charset=utf-8",
-                data: "{'query' : '" + id + "', startIndex : 0, pageSize :  2}",//{ "query": id },
+                data: "{'searchString' : '" + id + "', startIndex : 0, pageSize :  2}",//{ "query": id },
                 datatype: "json",
                 success: function (data) {
                     //debugger;
@@ -80,7 +80,7 @@
     }
     else
     {
-        albumEntryNo = "666";
+        albumEntryNo = "";
     }
 }
 

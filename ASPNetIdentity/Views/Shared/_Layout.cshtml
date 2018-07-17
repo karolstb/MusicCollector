@@ -21,7 +21,7 @@
                 </button>
                 @Html.ActionLink("Music Collector", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 
-                @Html.ActionLink("Albumy", "Index", "Albums", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Albumy", "Index", "Albums", new { area = "", startIndex = 0, pageSize = 2 }, new { @class = "navbar-brand" })
 
                 @Html.ActionLinkIfAuthorize("Moja kolekcja", "Index", "CollectionEntries", new { area = "" }, new { @class = "navbar-brand" })
             </div>

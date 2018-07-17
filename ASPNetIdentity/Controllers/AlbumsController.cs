@@ -17,40 +17,67 @@ namespace MusicCollector.Controllers
         private MyApplicationDbContext db = new MyApplicationDbContext();
 
         // GET: Albums
-        public ActionResult Index(string searchString)
+        public ActionResult Index(string searchString, int startIndex, int pageSize)
         {
+            ViewBag.StartIndex = startIndex;
+            ViewBag.PageSize = pageSize;
+            ViewBag.SearchString = searchString;
+
             if (!String.IsNullOrEmpty(searchString))
             {
                 searchString = searchString.ToUpper();
-                var filteredList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString) 
-                    || c.Title.ToUpper().Contains(searchString)).ToList();
+                var filteredList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString)
+                    || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize);
                 return View(filteredList);
             }
-            return View(db.Album.ToList());
+            else
+            {
+                return View(db.Album.ToList().Skip(startIndex).Take(pageSize));
+            }
         }
 
         //na potrezeby okna modalnego
         [HttpGet]
-        public ActionResult AlbumModal(string query, int startIndex, int pageSize)
+        public ActionResult AlbumModal(string searchString, int startIndex, int pageSize)
         {
             ViewBag.StartIndex = startIndex;
-            var albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);//.ToList();
-            //var albumList = db.Album.ToList();
+            ViewBag.PageSize = pageSize;
+            ViewBag.SearchString = searchString;
+
+            IEnumerable<Album> albumList = new List<Album>();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                albumList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString)
+                   || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize);
+            }
+            else
+            {
+                albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);
+            }
             return PartialView("AlbumModal", albumList);
         }
 
         [HttpPost]
         [ActionName("AlbumModal")]
-        public ActionResult AlbumModalPost(string query, int startIndex, int pageSize)
+        public ActionResult AlbumModalPost(string searchString, int startIndex, int pageSize)
         {
             ViewBag.StartIndex = startIndex;
-            var albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);//.ToList();
-            //var albumList = db.Album.ToList();
+            ViewBag.PageSize = pageSize;
+            ViewBag.SearchString = searchString;
+
+            IEnumerable<Album> albumList = new List<Album>();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                albumList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString)
+                   || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize);
+            }
+            else
+            {
+                albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);
+            }
             return PartialView("AlbumModal", albumList);
         }
-
-       
-
+        
         // GET: Albums/Details/5
         public ActionResult Details(int? id)
         {
@@ -77,7 +104,7 @@ namespace MusicCollector.Controllers
             Album newAlbum = new Album();
             newAlbum.YearOfProduction = defaultYearOfProduction;
             newAlbum.Duration = new TimeSpan(0, minutes, 0);
-            return View( newAlbum);
+            return View(newAlbum);
         }
 
         //// GET: Albums/Create
@@ -131,7 +158,7 @@ namespace MusicCollector.Controllers
 
                 return RedirectToAction("Index");
             }
-            
+
             return View(album);
         }
 
@@ -194,7 +221,7 @@ namespace MusicCollector.Controllers
         {
             //usun zdjęcia
             List<Photo> photoList = db.Photos.Where(c => c.AlbumNo == id).ToList();
-            foreach(Photo photo in photoList)
+            foreach (Photo photo in photoList)
             {
                 if (!String.IsNullOrEmpty(photo.FilePath))
                 {
@@ -235,9 +262,9 @@ namespace MusicCollector.Controllers
                 var emptyData = new { ImageBase64 = "" };
                 return Json(emptyData, JsonRequestBehavior.AllowGet);
             }
-            
+
             //ViewBag.OrderNo = order;
-            
+
             string photo = "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";
             var imageBytes = Utils.SearchForGoogleImage(author + " " + title, order);
             photo = Convert.ToBase64String(imageBytes);
@@ -257,7 +284,7 @@ namespace MusicCollector.Controllers
             //    return Json(RelSelectList, JsonRequestBehavior.DenyGet);
             //}
 
-            return Json(author+" "+title + " trtrtr", JsonRequestBehavior.AllowGet);
+            return Json(author + " " + title + " trtrtr", JsonRequestBehavior.AllowGet);
             //return RedirectToAction("Create", new { albumNo = albumNo });
         }
 
@@ -265,7 +292,7 @@ namespace MusicCollector.Controllers
         public JsonResult GetAlbumInfo(int id)
         {
             var album = db.Album.Where(c => c.EntryNo == id).FirstOrDefault();
-            if(album!=null)
+            if (album != null)
             {
                 var data = new { AlbumID = album.EntryNo, AlbumDesc = album.MetaDescription };
                 return Json(data);

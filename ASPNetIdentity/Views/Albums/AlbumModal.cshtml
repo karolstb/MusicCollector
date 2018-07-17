@@ -35,10 +35,24 @@
 
 @{ 
     int _startIndex = 0;
+    int _pageSize = 2;
+    string _searchString = "";
+
     var startIndexTmp = ViewBag.StartIndex;
     if (startIndexTmp != null)
     {
         _startIndex = Convert.ToInt32(startIndexTmp);
+    }
+
+    var pageSizeTmp = ViewBag.PageSize;
+    if (pageSizeTmp != null)
+    {
+        _pageSize = Convert.ToInt32(pageSizeTmp);
+    }
+
+    if (ViewBag.SearchString != null)
+    {
+        _searchString = Convert.ToString(ViewBag.SearchString);
     }
 }
 
@@ -47,10 +61,12 @@
     <h4 class="modal-title" id="myModalLabel">Lista albumów</h4>
 </div>
 
-@using (Html.BeginForm("Index", "Albums", FormMethod.Post))
+@using (Html.BeginForm("AlbumModal", "Albums", FormMethod.Post))
 {
     <p>
-        Szukaj: <input id="searchString" name="searchString" type="text" /> <input type="submit" value="Szukaj" />
+        <input type="hidden" id="startIndex" name="startIndex" value="0" />
+        <input type="hidden" id="pageSize" name="pageSize" value="@_pageSize" />
+        Szukaj: <input id="searchString" name="searchString" type="text" value="@_searchString" /> <input type="submit" value="Szukaj" />
     </p>
 }
 
@@ -103,9 +119,23 @@
 </table>
 
 
-@Html.ActionLink("następna strona", "AlbumModal", new
+@*@Html.ActionLink("następna strona", "AlbumModal", new
 {
-    query = "test",
+    searchString = "test",
     startIndex = _startIndex + 2,
     pageSize = 2
+})*@
+
+@Html.ActionLink("poprzednia strona", "AlbumModal", new
+{
+    searchString = _searchString,
+    startIndex = _startIndex - _pageSize,
+    pageSize = _pageSize
+})
+||
+@Html.ActionLink("następna strona", "AlbumModal", new
+{
+    searchString = _searchString,
+    startIndex = _startIndex + _pageSize,
+    pageSize = _pageSize
 })

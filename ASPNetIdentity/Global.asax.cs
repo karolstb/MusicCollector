@@ -9,6 +9,23 @@ namespace MusicCollector
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        //https://docs.microsoft.com/en-us/aspnet/mvc/overview/older-versions-1/controllers-and-routing/creating-custom-routes-cs
+        /// <summary>
+        /// dodaje nowe ściezki do domyślnych urli
+        /// </summary>
+        /// <param name="routes"></param>
+        //public static void RegisterRoutes(RouteCollection routes)
+        //{
+        //    routes.MapRoute("Index", "Index/{query}/{startIndex}",
+        //                new
+        //                {
+        //                    controller = "Albums",
+        //                    action = "Index",
+        //                    startIndex = 0,
+        //                    pageSize = 5
+        //                });
+        //}
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();

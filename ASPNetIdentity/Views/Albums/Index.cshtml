@@ -3,13 +3,36 @@
 @{
     ViewBag.Title = "Index";
 }
+@{
+    int _startIndex = 0;
+    int _pageSize = 2;
+    string _searchString = "";
 
+    var startIndexTmp = ViewBag.StartIndex;
+    if (startIndexTmp != null)
+    {
+        _startIndex = Convert.ToInt32(startIndexTmp);
+    }
+
+    var pageSizeTmp = ViewBag.PageSize;
+    if (pageSizeTmp != null)
+    {
+        _pageSize = Convert.ToInt32(pageSizeTmp);
+    }
+
+    if (ViewBag.SearchString != null)
+    {
+        _searchString = Convert.ToString(ViewBag.SearchString);
+    }
+}
 <h2>Index</h2>
 
-@using (Html.BeginForm("Index", "Albums", FormMethod.Post))
+@using (Html.BeginForm("Index", "Albums", FormMethod.Post))//, new { startIndex = _startIndex, pageSize = 2 }))
 {
 <p>
-    Szukaj: <input id = "searchString" name = "searchString" type = "text" /> <input type = "submit"  value = "Szukaj" />
+    <input type="hidden" id="startIndex" name="startIndex" value="0" />
+    <input type="hidden" id="pageSize" name="pageSize" value="@_pageSize" />
+    Szukaj: <input id = "searchString" name = "searchString" type = "text" value="@_searchString" /> <input type = "submit"  value = "Szukaj" />
           </p>
 }
 
@@ -52,3 +75,17 @@
 }
 
 </table>
+
+@Html.ActionLink("poprzednia strona", "Index", new
+{
+    searchString = _searchString,
+    startIndex = _startIndex - _pageSize,
+    pageSize = _pageSize
+})
+||
+@Html.ActionLink("następna strona", "Index", new
+{
+    searchString = _searchString,
+    startIndex = _startIndex + _pageSize,
+    pageSize = _pageSize
+})
