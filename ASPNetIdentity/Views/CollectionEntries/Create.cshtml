@@ -1,8 +1,12 @@
 ﻿<script src="~/Scripts/jquery-1.12.4.min.js"></script>
 <script src="~/Scripts/bootstrap.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>  
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<link href="~/Content/themes/base/jquery-ui.min.css"  rel="stylesheet" />
 
-<script type="text/javascript">
+@*<script type="text/javascript">
+
     //$(document).ready(function () {
     //var AlbumListPostBackURL = '/Albums/IndexModal';
     $(function () {
@@ -67,7 +71,7 @@
             $('#myModal').modal('hide');
         });
     });
-</script>
+</script>*@
 
 @model MusicCollector.Models.CollectionEntry
 
@@ -110,7 +114,10 @@
                 @Html.HiddenFor(Model => Model.AlbumNo, htmlAttributes: new { @class = "form-control" })
                 <label id="AlbumDescriptionTxt"></label>
                 @Html.ValidationMessageFor(model => model.AlbumNo, "", new { @class = "text-danger" })
-                <a href="javascript:void(0);" class="anchorAlbum" data-id="@albumEntryNo">Podaj Album</a>
+                <!-- zwykły ajax -->
+                @*<a href="javascript:void(0);" class="anchorAlbum" data-id="@albumEntryNo">Podaj Album</a>*@
+                <!-- jq dialog i paged list-->
+                <a href="javascript:void(0);"  onclick="GetAlbumList('@albumEntryNo')">Podaj Album</a>
             </div>
         </div>
 
@@ -141,15 +148,56 @@
     </div>
 }
 
+<!-- wersja 1 - zwykły ajax-->
 <div id='myModal' class='modal'>
     <div class="modal-dialog">
         <div class="modal-content">
             <div id='myModalContent'></div>
         </div>
     </div>
-
 </div>
+
+<!-- wersja z JQ Dialog-->
+<div class="popupcntr" id="albumModal_content" style="display: none;" title="Lista Albumów">
+    <div class="innerBox">
+        <div id="AlbumListContainer"></div>
+    </div>
+</div>  
 
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
+
+<script type="text/javascript">
+
+    var j$ = jQuery.noConflict();
+    function GetAlbumList(parametr) {
+        j$(function () { //było j$
+            j$('#albumModal_content').dialog({
+                //debugger;
+                dialogClass: 'eventdetail_dialog',
+                modal: true,
+                width: 676,
+                open: function (event, ui) {
+                    $.ajax({
+                        url: '@Url.Action("AlbumModal", "Albums")', //"/Player/GetPlayersByTeam",
+                        dataType: "html",
+                        //data: { teamId: teamId },
+                        data: "{'searchString' : '" + parametr + "', startIndex : 0, pageSize :  2}",
+                        type: "GET",
+                        error: function (xhr, status, error) {
+                            alert('error');
+                            var err = eval("(" + xhr.responseText + ")");
+                            toastr.error(err.message);
+                        },
+                        success: function (data) {
+                            $('#AlbumListContainer').html(data);
+                        }
+                    });
+                },
+                close: function (event, ui) { j$('#albumModal_content').dialog("destroy"); $('#AlbumListContainer').html(""); },
+            });
+        });
+    }
+
+   </script>

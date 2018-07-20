@@ -1,4 +1,6 @@
-﻿@model IEnumerable<MusicCollector.Models.Album>
+﻿@*@model IEnumerable<MusicCollector.Models.Album>*@
+@model PagedList.IPagedList<MusicCollector.Models.Album>  
+@using PagedList.Mvc;
 
 <script>
     $(function () {
@@ -74,7 +76,7 @@
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
-    <tr>
+    @*<tr>
         <th>
             @Html.DisplayNameFor(model => model.Author)
         </th>
@@ -86,6 +88,22 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.YearOfProduction)
+        </th>
+        <th></th>
+    </tr>*@
+
+    <tr>
+        <th>
+            Autor
+        </th>
+        <th>
+            Tytuł
+        </th>
+        <th>
+            Czas trwania
+        </th>
+        <th>
+            Rok produkcji
         </th>
         <th></th>
     </tr>
@@ -118,6 +136,42 @@
 
 </table>
 
+
+@if (Model.TotalItemCount > _pageSize)
+{
+    <div class="pagingBox">
+        <input id="HiddenPageSize" name="PageSize" type="hidden" />
+        <input id="HiddenPage" name="Page" type="hidden" />
+        <span class="selectBoxes display_none_mobile">
+            @Html.DropDownList("PageSize", new SelectList(new Dictionary<string, int> { { "2", 2 }, { "3", 3 }, { "4", 4 }, { "6", 6 } },
+                     "Key", "Value", Convert.ToString(ViewBag.PageSize)), new { id = "pagesizelist" })
+        </span>
+        <div class="pagerecord display_none_mobile">
+            Records
+           
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
+        </div>
+
+        @Html.PagedListPager(Model, page => Url.Action("AlbumModal", "Albums",
+                                       new
+                                       {
+                                           searchString = _searchString,
+                                           startIndex = (page - 1) * ViewBag.PageSize,//_startIndex,
+                                           pageSize = ViewBag.PageSize
+                                       }),
+                                    PagedListRenderOptions.EnableUnobtrusiveAjaxReplacing(new PagedListRenderOptions
+                                    {
+                                        Display = PagedListDisplayMode.IfNeeded,
+                                        MaximumPageNumbersToDisplay = 5
+                                    },
+                                    new AjaxOptions
+                                    {
+                                        InsertionMode = InsertionMode.Replace,
+                                        HttpMethod = "Get",
+                                        UpdateTargetId = "myModalContent"
+                                    }))
+    </div>
+}
 
 @*@Html.ActionLink("następna strona", "AlbumModal", new
 {

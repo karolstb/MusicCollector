@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using MusicCollector.Models;
 using System.IO;
+using PagedList;
 
 namespace MusicCollector.Controllers
 {
@@ -44,17 +45,30 @@ namespace MusicCollector.Controllers
             ViewBag.PageSize = pageSize;
             ViewBag.SearchString = searchString;
 
-            IEnumerable<Album> albumList = new List<Album>();
+            List<Album> albumList = new List<Album>();
             if (!String.IsNullOrEmpty(searchString))
             {
                 albumList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString)
-                   || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize);
+                   || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize).ToList();
             }
             else
             {
-                albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);
+                albumList = db.Album.ToList().Skip(startIndex).Take(pageSize).ToList();
+            }
+
+            try
+            {
+                return PartialView("~/Views/Albums/AlbumModal.cshtml",
+                    new StaticPagedList<Album>(albumList, Convert.ToInt32(startIndex / pageSize) + 1,
+                            Convert.ToInt32(pageSize), db.Album.Count()));//.Count()));
+            }
+            catch (Exception ex)
+            {
+
             }
             return PartialView("AlbumModal", albumList);
+            //playersList.Count > 0 ? playersList.FirstOrDefault().TotalCount : 0));
+            //return PartialView("AlbumModal", albumList);
         }
 
         [HttpPost]
@@ -65,15 +79,26 @@ namespace MusicCollector.Controllers
             ViewBag.PageSize = pageSize;
             ViewBag.SearchString = searchString;
 
-            IEnumerable<Album> albumList = new List<Album>();
+            List<Album> albumList = new List<Album>();
             if (!String.IsNullOrEmpty(searchString))
             {
                 albumList = db.Album.Where(c => c.Author.ToUpper().Contains(searchString)
-                   || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize);
+                   || c.Title.ToUpper().Contains(searchString)).ToList().Skip(startIndex).Take(pageSize).ToList();
             }
             else
             {
-                albumList = db.Album.ToList().Skip(startIndex).Take(pageSize);
+                albumList = db.Album.ToList().Skip(startIndex).Take(pageSize).ToList();
+            }
+
+            try
+            {
+                return PartialView("~/Views/Albums/AlbumModal.cshtml",
+                    new StaticPagedList<Album>(albumList, Convert.ToInt32(startIndex / pageSize) + 1,
+                            Convert.ToInt32(pageSize), db.Album.Count()));//.Count()));
+            }
+            catch(Exception ex)
+            {
+
             }
             return PartialView("AlbumModal", albumList);
         }
