@@ -5,11 +5,11 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <link href="~/Content/themes/base/jquery-ui.min.css"  rel="stylesheet" />
 
-@*<script type="text/javascript">
+<script type="text/javascript">
 
-    //$(document).ready(function () {
+    $(document).ready(function () {
     //var AlbumListPostBackURL = '/Albums/IndexModal';
-    $(function () {
+    @*$(function () {
         $(".anchorAlbum").click(function () {
             //debugger;
             var $buttonClicked = $(this);
@@ -34,7 +34,7 @@
                     alert("Nie udało się załadować listy albumów.");
                 }
             });
-        });
+        });*@
         //$("#closebtn").on('click',function(){
         //    $('#myModal').modal('hide');
 
@@ -71,7 +71,7 @@
             $('#myModal').modal('hide');
         });
     });
-</script>*@
+</script>
 
 @model MusicCollector.Models.CollectionEntry
 
@@ -175,22 +175,37 @@
         j$(function () { //było j$
             j$('#albumModal_content').dialog({
                 //debugger;
+                buttons:
+                             [{ text: "Ok", name: "OkClose", click: function () { alert('zamykam'); j$(this).dialog("close"); } }]
+
+                // 'SelectBtn': function () {
+                //    alert('tesssss');
+                //}
+                        ,
                 dialogClass: 'eventdetail_dialog',
                 modal: true,
                 width: 676,
                 open: function (event, ui) {
                     $.ajax({
-                        url: '@Url.Action("AlbumModal", "Albums")', //"/Player/GetPlayersByTeam",
-                        dataType: "html",
-                        //data: { teamId: teamId },
-                        data: "{'searchString' : '" + parametr + "', startIndex : 0, pageSize :  2}",
-                        type: "GET",
+                        //url: '@Url.Action("AlbumModal", "Albums")', //"/Player/GetPlayersByTeam",
+                        //dataType: "html",
+                        ////data: { teamId: teamId },
+                        //data: "{'searchString' : "+parametr+", startIndex : 0, pageSize :  2}",
+                        //type: "POST",
+                        
+                        type: "POST",
+                        url: '@Url.Action("AlbumModal", "Albums")',
+                        contentType: "application/json; charset=utf-8",
+                        data: "{'searchString' : '" + parametr + "', startIndex : 0, pageSize :  2}",//{ "query": id },
+                        datatype: "json",
                         error: function (xhr, status, error) {
+                            debugger;
                             alert('error');
-                            var err = eval("(" + xhr.responseText + ")");
-                            toastr.error(err.message);
+                            //var err = eval("(" + xhr.responseText + ")");
+                            //toastr.error(err.message);
                         },
                         success: function (data) {
+                            //$('#AlbumListContainer').html('');
                             $('#AlbumListContainer').html(data);
                         }
                     });

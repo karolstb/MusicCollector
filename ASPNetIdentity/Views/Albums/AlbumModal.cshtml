@@ -1,15 +1,47 @@
-﻿@*@model IEnumerable<MusicCollector.Models.Album>*@
+﻿<script src="~/Scripts/jquery-1.12.4.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+<link href="~/Content/themes/base/jquery-ui.min.css" rel="stylesheet" />
+
+@*@model IEnumerable<MusicCollector.Models.Album>*@
 @model PagedList.IPagedList<MusicCollector.Models.Album>  
 @using PagedList.Mvc;
 
 <script>
+    var dialogOptions = {
+        buttons:
+                     [{ text: "Ok", name: "OkClose", click: function () { alert('zamykam'); j$(this).dialog("close"); } }] ,
+        dialogClass: 'eventdetail_dialog',
+        modal: true,
+        width: 676,
+        open: function (event, ui) {
+            $.ajax({
+                //url: '@Url.Action("AlbumModal", "Albums")', //"/Player/GetPlayersByTeam",
+                type: "POST",
+                url: '@Url.Action("AlbumModal", "Albums")',
+                contentType: "application/json; charset=utf-8",
+                data: "{'searchString' : '666', startIndex : 0, pageSize :  2}",//{ "query": id },
+                datatype: "json",
+                error: function (xhr, status, error) {
+                    debugger;
+                    alert('error');
+                },
+                success: function (data) {
+                    $('#AlbumListContainer').html(data);
+                }
+            });
+        },
+        close: function (event, ui) { j$('#albumModal_content').dialog("destroy"); $('#AlbumListContainer').html(""); },
+    };
+    ///////////////
     $(function () {
-        $(".anchorSetAlbum").click(function () {
+        var j$ = jQuery.noConflict();
+        j$(".anchorSetAlbum").click(function () {
             //debugger;
-            var $buttonClicked = $(this);
+            var $buttonClicked = j$(this);
             var id = $buttonClicked.attr('data-id');
 
-            $.ajax({
+            j$.ajax({
                 //type: "GET",
                 //url: AlbumListPostBackURL,
                 type: "POST",
@@ -23,14 +55,33 @@
                     //$('#myModal').modal(options);
                     //$('#myModal').modal('show');
 
-                    $('#AlbumNo').val(data.AlbumID);
-                    $('#AlbumDescriptionTxt').html(data.AlbumDesc)
-                    $('#myModal').modal('hide');
+                    j$('#AlbumNo').val(data.AlbumID);
+                    j$('#AlbumDescriptionTxt').html(data.AlbumDesc)
+                    //zwykly ajax
+                    //$('#myModal').modal('hide');
+                    //jq dialog
+                    //j$('#albumModal_content').dialog("close");
+                    //$('#albumModal_content').attr("display", "none");
+                    //$('#AlbumListContainer').html("");
                 },
                 error: function () {
                     alert("Nie udało się pobrać albumu.");
                 }
             });
+
+            //alert('ok close: ' + j$('#OkClose'));
+            //j$('#OkClose').click();
+
+            //$("#albumModal_content .close").click()
+
+            j$('#albumModal_content').dialog(dialogOptions).dialog("close");
+            //j$('#albumModal_content').dialog("destroy");
+            //j$('#AlbumListContainer').html("");
+
+            //j$('#albumModal_content').dialog().dialog("close");//.closest('.ui-dialog-content').dialog("close");
+            //alert(j$('.ui-dialog-content'));
+            //j$('.ui-dialog-content').dialog('close');
+            //j$(".ui-dialog").dialog({ modal: true }).dialog("close");
         });
     });
 </script>
@@ -128,7 +179,8 @@
             @*@Html.ActionLink("Delete", "Delete", new { id=item.EntryNo })*@
             @*<a href="@Url.Action("SetAlbum","CollectionEntries",new { id=item.EntryNo });" 
                onclick="SetName();">Select</a>*@
-            <a href="javascript:void(0);" class="anchorSetAlbum" data-id="@item.EntryNo">Wybierz</a>
+            <a href="javascript:void(0);" name="SelectLink" class="anchorSetAlbum" data-id="@item.EntryNo">Wybierz</a>
+            @*<input name="SelectBtn"  type="button" value="SelectBtn"/>*@
         </td>
     </tr>
 }
@@ -151,7 +203,7 @@
            
             Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount 
         </div>
-
+        
         @Html.PagedListPager(Model, page => Url.Action("AlbumModal", "Albums",
                                        new
                                        {
@@ -168,7 +220,7 @@
                                     {
                                         InsertionMode = InsertionMode.Replace,
                                         HttpMethod = "Get",
-                                        UpdateTargetId = "myModalContent"
+                                        UpdateTargetId = "AlbumListContainer"//"myModalContent"
                                     }))
     </div>
 }
