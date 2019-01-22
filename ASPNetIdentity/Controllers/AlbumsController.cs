@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using MusicCollector.Models;
 using System.IO;
 using PagedList;
+using Hangfire;
 
 namespace MusicCollector.Controllers
 {
@@ -17,9 +18,22 @@ namespace MusicCollector.Controllers
         //string coverImgBase64 = "";
         private MyApplicationDbContext db = new MyApplicationDbContext();
 
+        public void Jobek()
+        {
+            int t = 0;
+            System.Diagnostics.Debug.WriteLine("jobek jobek");
+        }
+
         // GET: Albums
         public ActionResult Index(string searchString, int startIndex, int pageSize)
         {
+            
+            //test hangfire
+            //fire and forget
+            //BackgroundJob.Enqueue(() => System.Diagnostics.Debug.WriteLine("hang fire start-forget"));
+            //schedule
+            RecurringJob.AddOrUpdate(() => Jobek(), Cron.MinuteInterval(1));// "0/15 0 0 ? * * *");   //drugi argument to cron stirng. są generatroy online. ten jest co 15 sekund
+
             ViewBag.StartIndex = startIndex;
             ViewBag.PageSize = pageSize;
             ViewBag.SearchString = searchString;

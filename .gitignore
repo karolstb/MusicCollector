@@ -31,3 +31,5 @@ _ReSharper*/
 *.ldf
 MusicPhotos*/
 !ASPNetIdentity/Views/Releases*
+#ignoruje paczki z nugeta
+#packages

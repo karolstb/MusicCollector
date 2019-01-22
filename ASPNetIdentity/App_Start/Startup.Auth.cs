@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using Microsoft.Owin;
 using Owin;
+using Hangfire;
 
 namespace MusicCollector
 {
@@ -18,6 +19,10 @@ namespace MusicCollector
             app.CreatePerOwinContext<MyApplicationUserManager>(MyApplicationUserManager.Create);
             //manager do logowania/wylogowania
             app.CreatePerOwinContext<MyApplicationSignInManager>(MyApplicationSignInManager.Create);
+
+            GlobalConfiguration.Configuration.UseSqlServerStorage("KonekszonString");   //tworzy hangfireowe tabelki w bazie
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
         }
     }
 }
